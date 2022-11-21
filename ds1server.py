@@ -11,7 +11,7 @@ def threaded(c):
         data = c.recv(1024)
         if not data:
             print('Bye')
-            print_lock.release()
+            #print_lock.release()
             break
 
         data = data[::-1]
@@ -34,7 +34,7 @@ def Main():
     while True:
         c, addr = s.accept()
 
-        print_lock.acquire()
+        #print_lock.acquire()
         print('Connected to :', addr[0], ':', addr[1])
         start_new_thread(threaded, (c,))
     s.close()

@@ -1,0 +1,129 @@
+//NTP
+#include <iostream>
+using namespace std;
+
+void NTP(string h, string m)
+{
+	int hrs = stoi(h);
+	int mins = stoi(m);
+	cout << "The original time at UTC server is: " << hrs << " : " << mins << endl;
+	int t1, t2, t3, t4;
+	cout << "Enter value of t1: ";
+	cin >> t1;
+	cout << "Enter value of t2: ";
+	cin >> t2;
+	cout << "Enter value of t3: ";
+	cin >> t3;
+	cout << "Enter value of t4: ";
+	cin >> t4;
+	float delay = 9999, offset = 9999;
+	for (float i = -0.3; i < 0.4; i += 0.1)
+	{
+		float del = (float)(((t4 + i) - (t1 + i)) - ((t3 + i) - (t2 + i))) / (float)2;
+		float offs = (float)(((t2 + i) - (t1 + i)) + ((t3 + i) - (t4 + i))) / (float)2;
+		if (abs((int)del) < delay)
+		{
+			delay = abs((int)del);
+			offset = offs;
+		}
+	}
+	cout << "\nThe delay for secondary server is: " << delay << endl;
+	cout << "The offset for secondary server is: " << (int)offset << endl;
+	mins += offset;
+	while (mins >= 60)
+	{
+		hrs += 1;
+		mins -= 60;
+	}
+	cout << "\nHence, after adding offset, time at secondary server: " << hrs << " : " << mins << endl;
+}
+void display(int e1, int e2, int p1[5], int p2[3])
+{
+	int i;
+	cout << "\nThe time stamps of events in P1:\n";
+	for (i = 0; i < e1; i++)
+	{
+		cout << p1[i] << " ";
+	}
+	cout << "\nThe time stamps of events in P2:\n";
+	for (i = 0; i < e2; i++)
+		cout << p2[i] << " ";
+	cout << endl;
+}
+		if (cho == 2)
+		{
+			cout << "Enter UTC time in HH:MM format: ";
+			cin >> ss;
+			int i = 0;
+			while (ss[i] != ':')
+			{
+				a += ss[i];
+				i++;
+			}
+			i++;
+			while (ss[i])
+			{
+				b += ss[i];
+				i++;
+			}
+			NTP(a, b);
+		}
+	}
+	return 0;
+}
+
+
+//lamport
+
+import sys
+import pprint    # to prettify our dictionary
+
+processList =[]
+logicalClock = {}
+TimeStamp = {}
+
+def addProcess():
+    pName = input("Enter Processes Name seperated by space: ")
+    processList = pName.split()
+    for process in processList:
+        logicalClock[process] = 0
+
+def sendMessage(t):
+    eName = input("Enter the Event which will receive the message: ")
+    pName = input("Enter the process on which this event will occur: ")
+    if t > logicalClock[pName]:
+        logicalClock[pName] = t
+    TimeStamp[eName] = logicalClock[pName] + 1
+    logicalClock[pName] += 1
+
+def addEvent():
+    pName = input("Enter the Process for which you want to add an event: ")
+    eName = input("Enter Event Name: ")
+    eType = input("Enter the type of event(normal/message): ")
+    if eType == "normal":
+        TimeStamp[eName] = logicalClock[pName] + 1
+        logicalClock[pName] += 1
+    if eType == "message":
+        TimeStamp[eName] = logicalClock[pName] + 1
+        logicalClock[pName] += 1
+        sendMessage(TimeStamp[eName])
+
+def display():
+    print("-"*20)
+    pprint.pprint(TimeStamp)
+
+
+if __name__ == "__main__":
+    addProcess()
+    while(1):
+        print("-"*20)
+        print("1.ADD EVENT\n2.DISPLAY TIMESTAMP\n3.EXIT")
+        print("-"*20)
+        n = int(input("Enter your choice: "))
+        if n==1:
+            addEvent()
+        elif n==2:
+            display()
+        else:
+            sys.exit("BYE")
+
