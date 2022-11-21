@@ -65,16 +65,18 @@ class pass1:
                 if len(word)==1:
                     if word[0]!='END' and word[0]!='LTORG':
                         print(self.lc,end=" ")
+                        self.lc = self.lc + 1
                     if word[0]!='LTORG':
                         q=self.find(word[0])
                         print(q)
+                        self.lc = self.lc + 1
                     if word[0]=='LTORG':
                         for i in range(self.litcount):
                             print(self.lc, end=" ")
                             q=self.littab[i][1]=self.lc
                             print("['DL,01'] ['C,{}']".format(self.littab[i][0]))
                             self.lc = self.lc + 1
-                    self.lc = self.lc + 1
+
                 elif len(word)==2:
                     if word[0]=='START':
                         self.lc=int(word[1])
@@ -197,6 +199,9 @@ class pass1:
             print(self.symtab)
             print("********LITTAB********")
             print(self.littab)
+            with open ("symtab.txt","w") as file:
+                str1=str(self.symtab)
+                file.write(str1)
 
 
 p1=pass1()
